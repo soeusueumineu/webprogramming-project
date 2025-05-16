@@ -1,0 +1,659 @@
+
+
+/* 구글 폰트 고운돋움체 적용 */
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
+
+/* 전체 기본 스타일 설정 */
+* {
+  box-sizing: border-box;
+  font-family: "Gowun Dodum", sans-serif;
+}
+
+/* 배경과 글자색 기본 설정 */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #e0f7fa, #e8f5e9);
+  color: #333;
+}
+
+/* 헤더 영역 스타일 */
+header {
+  padding: 2rem 1rem 1rem;
+  background-color: #ffffffdd;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 헤더 안의 콘텐츠 배치 */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* 버튼 묶음 */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-left: auto;
+}
+
+/* 로고 이미지 스타일 */
+.logo {
+  height: 100px;
+  width: auto;
+  border-radius: 10px;
+}
+
+/* 헤더 제목 텍스트 */
+.header-container h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  flex: 1;
+}
+
+/* 메뉴 토글 버튼 고정 위치 및 스타일 */
+#menuToggle {
+  /* position: fixed; */
+  top: 20px;
+  right: 100px;
+  z-index: 99999;
+  background-color: #ffecb3;
+  color: #333;
+  border: none;
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* 반응형에서 메뉴 버튼 위치 조정 */
+@media screen and (max-width: 768px) {
+  #menuToggle {
+    top: 20px;
+    right: 20px;
+    transform: none;
+  }
+
+  .button-group {
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+}
+
+/* 버튼 hover 효과 */
+#menuToggle:hover,
+#darkToggle:hover {
+  background-color: #ffd54f;
+}
+
+/* 헤더 설명 문구 */
+header p {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* 메인 wrapper 기본과 메뉴 열렸을 때 애니메이션 */
+.main-wrapper {
+  display: flex;
+  transition: margin-right 0.4s ease;
+}
+
+.main-wrapper.shifted {
+  margin-right: 300px;
+}
+
+/* 카테고리 카드 그리드 설정 */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  padding: 3rem;
+  flex: 1;
+}
+
+/* 카테고리 리스트 항목 */
+.category-list li {
+  list-style: none;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* summary 요소 꾸미기 */
+.category-list summary {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.05rem;
+  outline: none;
+  list-style: none;
+}
+
+/* summary 화살표 제거 및 변경 */
+.category-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.category-list summary::marker {
+  content: "";
+}
+
+.category-list summary::before {
+  content: "▶";
+  display: inline-block;
+  margin-right: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+/* 펼쳐졌을 때 화살표 회전 */
+.category-list details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+/* 카테고리 영역 박스 스타일 */
+.category-list details {
+  background: #f9fbe7;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease;
+}
+
+.category-list details[open] {
+  background: #fffde7;
+}
+
+/* 하위 리스트 들여쓰기 및 스타일 */
+.category-list ul {
+  padding-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.category-list ul li {
+  padding: 0.4rem 0.6rem;
+  margin: 0.2rem 0;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.category-list ul li:hover {
+  background-color: #e0f2f1;
+  color: #00796b;
+}
+
+/* 카드 애니메이션 스타일 */
+.card {
+  width: 100%;
+  height: 160px;
+  perspective: 1000px;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.7s;
+  transform-style: preserve-3d;
+}
+
+.card:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 1rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-front {
+  background: #f1f8e9;
+}
+
+.card-back {
+  background: #c8e6c9;
+  transform: rotateY(180deg);
+}
+
+/* 푸터 스타일 */
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  background-color: #eeeeee;
+  margin-top: 2rem;
+}
+
+/* 음악 추천 메뉴 스타일 (오른쪽 사이드 메뉴) */
+#playlistMenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background: #fff8e1;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  overflow-y: auto;
+  transition: transform 0.4s ease;
+  z-index: 99999;
+
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  will-change: transform;
+  visibility: hidden;
+  opacity: 0;
+}
+
+#playlistMenu.open {
+  transform: translateX(0);
+  visibility: visible;
+  opacity: 1;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* 메뉴 헤더 */
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  gap: 1rem;
+}
+
+/* 메뉴 제목 */
+#playlistMenu h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* 닫기 버튼 */
+#closeMenu {
+  background-color: transparent;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #444;
+  padding: 0.3rem 0.5rem;
+}
+
+/* 메뉴 내부 리스트 스타일 */
+#playlistMenu ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+#playlistMenu li {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+/* 오디오 컨트롤러 영역 */
+.audio-controller {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+/* 오디오 플레이어 기본 스타일 */
+#audioPlayer {
+  margin-bottom: 1rem;
+}
+
+/* 볼륨 버튼 스타일 (오른쪽 하단) */
+#volumeToggle {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background-color: #ffecb3;
+  color: #333;
+  border: none;
+  padding: 0.6rem 0.8rem;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  z-index: 99999;
+  transition: background-color 0.3s;
+}
+
+#volumeToggle:hover {
+  background-color: #ffd54f;
+}
+
+/* 볼륨 컨트롤 박스 */
+#volumeFloating {
+  position: fixed;
+  bottom: 120px;
+  right: 20px;
+  background-color: #ffffffcc;
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: auto;
+}
+
+/* 볼륨 슬라이더 기본 스타일 */
+#volumeControl {
+  -webkit-appearance: none;
+  width: 100px;
+  height: 6px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #ffd54f, #ff8a65);
+  outline: none;
+  transition: background 0.3s ease;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* 크롬 계열 브라우저 슬라이더 핸들 스타일 */
+#volumeControl::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 2px solid #ff8a65;
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+#volumeControl::-webkit-slider-thumb:hover {
+  background: #ffe0b2;
+  transform: scale(1.1);
+}
+
+/* Firefox 브라우저 슬라이더 핸들 스타일 */
+#volumeControl::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 2px solid #ff8a65;
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+#volumeControl::-moz-range-thumb:hover {
+  background: #ffe0b2;
+  transform: scale(1.1);
+}
+
+#volumeControl::-moz-range-track {
+  background: linear-gradient(to right, #ffd54f, #ff8a65);
+  height: 6px;
+  border-radius: 5px;
+}
+
+/* 볼륨 값 표시 텍스트 */
+#volumeValue {
+  margin-left: 10px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #444;
+  transition: color 0.3s ease;
+}
+
+/* 3D 씬용 컨테이너 */
+#threeContainer {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  z-index: 9998;
+  pointer-events: none;
+}
+
+/* 음악 중지 버튼 스타일 */
+#stopMusicButtonInVolume {
+  background-color: #ffcdd2;
+  color: #333;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#stopMusicButtonInVolume:hover {
+  background-color: #ef9a9a;
+}
+
+/* 🌙 다크모드 대응 스타일 */
+body.dark-mode {
+  background: linear-gradient(to right, #1e1e1e, #2a2a2a);
+  color: #f4f1e8;
+}
+
+body.dark-mode header {
+  background-color: #2a2a2a;
+}
+
+body.dark-mode .header-container h1 {
+  color: #f9eec0;
+}
+
+body.dark-mode #closeMenu {
+  color: #eee;
+}
+
+body.dark-mode #menuToggle,
+body.dark-mode #darkToggle {
+  background-color: #ffb347;
+  color: #1e1e1e;
+}
+
+body.dark-mode .card-front {
+  background: #3a3a3a;
+  color: #f4f1e8;
+}
+
+body.dark-mode .card-back {
+  background: #555;
+  color: #ffd180;
+}
+
+body.dark-mode #playlistMenu {
+  background: #2f2f2f;
+  color: #eee;
+}
+
+body.dark-mode footer {
+  background-color: #1e1e1e;
+  color: #aaa;
+}
+
+body.dark-mode .category-list details {
+  background: #2a2a2a;
+  color: #eee;
+}
+
+body.dark-mode .category-list details[open] {
+  background: #3a3a3a;
+}
+
+body.dark-mode .category-list ul li:hover {
+  background-color: #455a64;
+  color: #fff;
+}
+
+body.dark-mode #volumeFloating {
+  background-color: #444;
+}
+
+body.dark-mode #volumeControl {
+  background: linear-gradient(to right, #4e342e, #bf360c);
+}
+
+body.dark-mode #volumeControl::-webkit-slider-thumb,
+body.dark-mode #volumeControl::-moz-range-thumb {
+  border-color: #ffccbc;
+}
+
+/* 다크모드용 다크모드 토글 버튼 */
+#darkToggleFloating {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ffecb3;
+  color: #333;
+  border: none;
+  padding: 0.6rem 0.8rem;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  z-index: 99999;
+  transition: background-color 0.3s;
+}
+
+#darkToggleFloating:hover {
+  background-color: #ffd54f;
+}
+
+body.dark-mode #darkToggleFloating {
+  background-color: #ffb347;
+  color: #1e1e1e;
+}
+
+body.dark-mode #volumeValue {
+  color: #f0e68c;
+}
+
+body.dark-mode #volumeToggle {
+  background-color: #ffb347;
+  color: #1e1e1e;
+}
+
+body.dark-mode #volumeToggle:hover {
+  background-color: #ffa726;
+}
+
+body.dark-mode #stopMusicButtonInVolume {
+  background-color: #e57373;
+  color: #fff;
+}
+
+body.dark-mode #stopMusicButtonInVolume:hover {
+  background-color: #ef5350;
+}
+
+/* 반응형 대응 - 모바일 화면 최적화 */
+@media screen and (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main-wrapper.shifted {
+    margin-right: 0;
+  }
+
+  #playlistMenu {
+    width: 100%;
+  }
+
+  .logo {
+    height: 60px;
+    margin-bottom: 0.5rem;
+  }
+
+  #playlistMenu {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    transform: translateY(-100%);
+    transition: transform 0.4s ease;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  #playlistMenu.open {
+    transform: translateY(0);
+  }
+
+  /* 메뉴 토글 버튼 위치도 좀 더 왼쪽으로 이동 */
+  #menuToggle {
+    position: fixed;
+    bottom: 140px; /* volumeToggle(70px)보다 위 */
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: #ffecb3;
+    color: #333;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 99999;
+    transition: background-color 0.3s;
+    overflow: hidden;
+  }
+
+  /* 🎵 아이콘만 표시 */
+  #menuToggle::before {
+    content: "🎵";
+  }
+
+  /* 내부 텍스트 숨김 */
+  #menuToggle span {
+    display: none;
+  }
+
+  /* hover 스타일 */
+  #menuToggle:hover {
+    background-color: #ffd54f;
+  }
+
+  /* 다크모드 배경도 같이 조정 */
+  body.dark-mode #playlistMenu {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+
+  /* 오디오 컨트롤도 겹치지 않게 약간 위로 */
+  #volumeToggle {
+    bottom: 90px;
+  }
+
+  #volumeFloating {
+    bottom: 140px;
+  }
