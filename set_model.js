@@ -1,11 +1,10 @@
-
-
 import * as THREE from "./environment/node_modules/three/build/three.module.js";
 import { GLTFLoader } from "./environment/node_modules/three/examples/jsm/loaders/GLTFLoader.js";
 
 //외부에서도 사용해야 하기에 export
 export let renderer = null;
 export let animateId = null;
+export let animateCameraId = null;
 
 const loader = new GLTFLoader();
 
@@ -13,6 +12,12 @@ let scene, fire_model, particles, camera, type;
 let particleData = [];
 
 //정의한 클래스들
+
+class ObjectInform {
+  constructor(rotation) {
+    this.rotation = rotation;
+  }
+}
 
 class LightInform {
   constructor(directionalLight, directPos, pointLight, pointPos) {
@@ -40,7 +45,7 @@ class CameraInform {
   }
 }
 
-let lightInform, fogInform, cameraInform;
+let lightInform, fogInform, cameraInform, objectInform;
 
 //카메라 좌우 조절을 위한 변수
 let camera_rotation = 0;
@@ -53,14 +58,11 @@ function createScene() {
 
 //카메라 생성
 function createCamera() {
-  if (camera) {
-    scene.remove(camera);
-  }
   camera = new THREE.PerspectiveCamera(
     cameraInform.fov,
     window.innerWidth / window.innerHeight,
     0.1,
-    1000
+    10000
   );
   camera.position.set(
     cameraInform.position.x,
@@ -90,14 +92,17 @@ function addLights() {
     lightInform.directPos.y,
     lightInform.directPos.z
   );
+  light.rotation.set(0.0, 0.0, 0.0);
   scene.add(light);
 
   const point = lightInform.pointLight;
-  point.position.set(
-    lightInform.pointPos.x,
-    lightInform.pointPos.y,
-    lightInform.pointPos.z
-  );
+  if (lightInform.pointLight != null) {
+    point.position.set(
+      lightInform.pointPos.x,
+      lightInform.pointPos.y,
+      lightInform.pointPos.z
+    );
+  }
   scene.add(point);
 }
 
@@ -117,7 +122,18 @@ function loadFireModel() {
 function loadModel(glbPath) {
   loader.load(glbPath, (gltf) => {
     const model = gltf.scene;
+
     model.position.set(0, 0, 0);
+
+    if (objectInform != null) {
+      model.rotation.set(
+        objectInform.rotation.x,
+        objectInform.rotation.y,
+        objectInform.rotation.z
+      );
+    } else {
+      model.rotation.set(0, 0, 0);
+    }
     model.scale.set(1, 1, 1);
 
     scene.add(model);
@@ -312,7 +328,14 @@ function createRainParticles() {
 
 //안개 추가 (fogInform을 조절하여 안개 설정)
 function addFog() {
-  scene.fog = new THREE.Fog(fogInform.fogColor, fogInform.near, fogInform.far);
+  if (fogInform != null) {
+    scene.fog = new THREE.Fog(
+      fogInform.fogColor,
+      fogInform.near,
+      fogInform.far
+    );
+    return;
+  }
 }
 
 //카메라 좌우 조절을 위해 이징을 사용한 애니메이션 함수
@@ -333,11 +356,11 @@ function animateValue(start, end, duration, onUpdate) {
     onUpdate(currentValue); // 값 업데이트 콜백
 
     if (t < 1) {
-      requestAnimationFrame(step); // 다음 프레임 호출
+      animateCameraId = requestAnimationFrame(step); // 다음 프레임 호출
     }
   }
 
-  requestAnimationFrame(step);
+  animateCameraId = requestAnimationFrame(step);
 }
 
 //카메라 좌우 조절 애니메이션
@@ -393,21 +416,22 @@ function animate() {
     case "fire":
       //fireAnimation();
       fireParticleAnimation();
-      console.log("모닥불 감성");
+      //console.log("모닥불 감성");
       break;
     case "rainy":
-      console.log("비 오는 날");
+      //console.log("비 오는 날");
       break;
     case "night":
-      console.log("밤 감성");
+      //console.log("밤 감성");
       break;
     case "dreamy":
-      console.log("몽환적인 분위기");
+      //console.log("몽환적인 분위기");
       break;
     default:
   }
 
   cameraMovement();
+  //cameraPositionAnimation();
 
   renderer.render(scene, camera);
 }
@@ -426,6 +450,18 @@ export function init(glbPath, cardText) {
   threeContainer.style.display = "block";
   exit3D.style.display = "block";
 
+  if (camera) {
+    scene.remove(camera);
+  }
+  if (camera) {
+    console.log(
+      "처음2",
+      camera.rotation.x,
+      camera.rotation.y,
+      camera.rotation.z
+    );
+  }
+
   //카메라 좌우 조절시 초기 값
   camera_rotation = 0;
   first_camera_rotation = 0;
@@ -438,6 +474,7 @@ export function init(glbPath, cardText) {
       //해당 init함수는 한번만 호출되므로 cardText에 따라 애니메이션을 조절하기에 문제가 있음
       //따라서 type을 따로 설정
       type = "fire";
+      objectInform = null;
       lightInform = new LightInform(
         new THREE.DirectionalLight(0x9cecff, 0.3),
         new THREE.Vector3(3, 100, 40),
@@ -458,6 +495,7 @@ export function init(glbPath, cardText) {
 
     case "🌧️ 비 오는 날":
       type = "rainy";
+      objectInform = null;
       lightInform = new LightInform(
         new THREE.DirectionalLight(0xbab08d, 3),
         new THREE.Vector3(3, 0, 40),
@@ -475,10 +513,36 @@ export function init(glbPath, cardText) {
       break;
 
     case "🌙 밤 감성":
+      if (camera) {
+        console.log(
+          "처음1",
+          camera.rotation.x,
+          camera.rotation.y,
+          camera.rotation.z
+        );
+      }
+      type = "night";
+      objectInform = new ObjectInform(new THREE.Vector3(-0.3, 0, 0.01));
+      lightInform = new LightInform(
+        new THREE.DirectionalLight(0x524761, 10),
+        new THREE.Vector3(0, 100, 65),
+        new THREE.AmbientLight(0x524761, 5),
+        new THREE.Vector3(100, 0, 0)
+      );
+      fogInform = new FogInform(0x0f1b1b, -30, 150);
+      first_camera_rotation = 1;
+      cameraInform = new CameraInform(
+        10,
+        new THREE.Vector3(15.86, 12, 10.7),
+        new THREE.Vector3(-0.265, camera_rotation + first_camera_rotation, 0),
+        "y"
+      );
+
       break;
 
     case "🌌 몽환적인 분위기":
       type = "dreamy";
+      objectInform = null;
       lightInform = new LightInform(
         new THREE.DirectionalLight(0x524761, 5),
         new THREE.Vector3(3, 0, 40),
@@ -486,11 +550,11 @@ export function init(glbPath, cardText) {
         new THREE.Vector3(0, 0, 0)
       );
       fogInform = new FogInform(0x524761, 1, 1000);
-      first_camera_rotation = 1;
+      first_camera_rotation = 0.75;
       cameraInform = new CameraInform(
         25,
         new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0.5, camera_rotation, -0.5),
+        new THREE.Vector3(0.5, camera_rotation + first_camera_rotation, -0.5),
         "Y"
       );
 
@@ -499,6 +563,31 @@ export function init(glbPath, cardText) {
     default:
       type = "default";
   }
+  camera_rotation = first_camera_rotation;
+
+  // 타입에 따라 로딩 gif 설정
+  let src = "";
+  let p = "";
+  switch (type) {
+    case "fire":
+      src = "fire.gif";
+      p = "모닥불에 불 지피는 중...";
+      break;
+    case "rainy":
+      src = "rainy.gif";
+      p = "먹구름 몰려오는 중...";
+      break;
+    case "night":
+      src = "night.gif";
+      p = "해 떨어지는 중...";
+      break;
+    case "dreamy":
+      src = "dreamy.gif";
+      p = "우주로 향하는 중...";
+      break;
+  }
+  document.getElementById("gif").src = src;
+  document.getElementById("loading-text").textContent = p;
 
   createCamera();
   createRenderer();
@@ -507,3 +596,4 @@ export function init(glbPath, cardText) {
   addLights();
   loadModel(glbPath);
   window.addEventListener("resize", onWindowResize);
+}

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -29,54 +27,88 @@
     <!-- 메인 콘텐츠 영역 (카테고리 카드 그리드) -->
     <div class="main-wrapper" id="mainWrapper">
       <main class="category-grid">
-        <!-- 분위기 카드: 모닥불 감성 -->
-        <div class="card">
-          <div class="card-inner">
-            <div class="card-front">🔥 모닥불 감성</div>
-            <div class="card-back">인디 포크, 재즈, 클래식</div>
+        <div class="card-wrapper">
+          <!-- 분위기 카드: 모닥불 감성 -->
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-front">🔥 모닥불 감성</div>
+              <div class="card-back">인디 포크, 재즈, 클래식</div>
+            </div>
           </div>
-        </div>
-        <!-- 분위기 카드: 비 오는 날 -->
-        <div class="card">
-          <div class="card-inner">
-            <div class="card-front">🌧️ 비 오는 날</div>
-            <div class="card-back">로파이, 피아노, 발라드</div>
+          <!-- 분위기 카드: 비 오는 날 -->
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-front">🌧️ 비 오는 날</div>
+              <div class="card-back">로파이, 피아노, 발라드</div>
+            </div>
           </div>
-        </div>
-        <!-- 분위기 카드: 밤 감성 -->
-        <div class="card">
-          <div class="card-inner">
-            <div class="card-front">🌙 밤 감성</div>
-            <div class="card-back">R&B, 시티팝, 신스웨이브</div>
+          <!-- 분위기 카드: 밤 감성 -->
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-front">🌙 밤 감성</div>
+              <div class="card-back">R&B, 시티팝, 신스웨이브</div>
+            </div>
           </div>
-        </div>
-        <!-- 분위기 카드: 몽환적인 분위기 -->
-        <div class="card">
-          <div class="card-inner">
-            <div class="card-front">🌌 몽환적인 분위기</div>
-            <div class="card-back">드림팝, 신스팝</div>
+          <!-- 분위기 카드: 몽환적인 분위기 -->
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-front">🌌 몽환적인 분위기</div>
+              <div class="card-back">드림팝, 신스팝</div>
+            </div>
           </div>
         </div>
       </main>
     </div>
 
     <!-- 3D 전환 시 나타나는 로딩 오버레이 -->
-    <div
-      id="loading-overlay"
-      style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: black;
-        z-index: 9999;
-        opacity: 1;
-        transition: opacity 1s ease;
-        pointer-events: none;
-      "
-    ></div>
+    <div id="loading-overlay">
+      <!-- gif 중앙 배치 -->
+      <div
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        "
+      >
+        <img id="gif" style="width: 100px; height: auto" />
+      </div>
+
+      <!-- 텍스트 + 로딩바 아래 배치 -->
+      <div
+        style="
+          position: absolute;
+          bottom: 15%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 80%;
+          text-align: center;
+        "
+      >
+        <div style="margin-bottom: 10px; font-size: 1.2rem">
+          <p id="loading-text"></p>
+        </div>
+        <div
+          style="
+            width: 100%;
+            height: 10px;
+            background-color: #444;
+            border-radius: 5px;
+            overflow: hidden;
+          "
+        >
+          <div
+            class="loading-bar"
+            style="
+              height: 100%;
+              width: 0%;
+              background-color: orange;
+              animation: loading-fill 1.5s forwards;
+            "
+          ></div>
+        </div>
+      </div>
+    </div>
 
     <!-- 3D 씬을 렌더링하는 컨테이너 -->
     <div
@@ -321,6 +353,9 @@
 
     <!-- 외부 자바스크립트 모듈 파일 연결 -->
 
+    <!-- jQuery CDN 포함 필요 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script type="module" src="script.js"></script>
   </body>
-</html
+</html>

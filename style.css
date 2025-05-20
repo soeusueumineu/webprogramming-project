@@ -1,5 +1,3 @@
-
-
 /* 구글 폰트 고운돋움체 적용 */
 @import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
 
@@ -110,11 +108,14 @@ header p {
 
 /* 카테고리 카드 그리드 설정 */
 .category-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 2rem;
-  padding: 3rem;
-  flex: 1;
+  width: 100%;
+  text-align: center; /* 가운데 정렬 위한 기준 */
+}
+
+.card-wrapper {
+  width: fit-content; /* 카드 전체 너비만큼만 */
+  margin: 0 auto; /* 가운데 정렬 */
+  overflow: hidden; /* float 해제 */
 }
 
 /* 카테고리 리스트 항목 */
@@ -190,8 +191,10 @@ header p {
 
 /* 카드 애니메이션 스타일 */
 .card {
-  width: 100%;
+  float: left;
+  width: 240px;
   height: 160px;
+  margin: 1rem;
   perspective: 1000px;
 }
 
@@ -575,6 +578,17 @@ body.dark-mode #stopMusicButtonInVolume:hover {
     align-items: flex-start;
   }
 
+  .card-wrapper {
+    width: 100%;
+    text-align: center;
+  }
+
+  .card {
+    float: none;
+    width: 90%; /* 또는 100%에서 padding 고려 */
+    margin: 1rem auto; /* 수평 가운데 정렬 */
+  }
+
   .main-wrapper.shifted {
     margin-right: 0;
   }
@@ -657,3 +671,37 @@ body.dark-mode #stopMusicButtonInVolume:hover {
   #volumeFloating {
     bottom: 140px;
   }
+}
+
+/* 3D 전환 시 나타나는 로딩 오버레이 */
+#loading-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 1s ease;
+  pointer-events: none;
+  color: white;
+  font-family: sans-serif;
+}
+
+/* gif */
+#gif {
+  width: 100px;
+  height: auto;
+}
+
+/* 로딩바 채우기 */
+@keyframes loading-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
