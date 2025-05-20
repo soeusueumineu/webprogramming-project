@@ -1,5 +1,6 @@
 import * as THREE from "./environment/node_modules/three/build/three.module.js";
 import { GLTFLoader } from "./environment/node_modules/three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "./environment/node_modules/three/examples/jsm/loaders/DRACOLoader.js";
 
 //외부에서도 사용해야 하기에 export
 export let renderer = null;
@@ -7,6 +8,11 @@ export let animateId = null;
 export let animateCameraId = null;
 
 const loader = new GLTFLoader();
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath(
+  "https://poom-eo.s3.ap-northeast-2.amazonaws.com/environment/draco/"
+); // decoder 파일 경로
+loader.setDRACOLoader(dracoLoader);
 
 let scene, fire_model, particles, camera, type;
 let particleData = [];
@@ -513,14 +519,6 @@ export function init(glbPath, cardText) {
       break;
 
     case "🌙 밤 감성":
-      if (camera) {
-        console.log(
-          "처음1",
-          camera.rotation.x,
-          camera.rotation.y,
-          camera.rotation.z
-        );
-      }
       type = "night";
       objectInform = new ObjectInform(new THREE.Vector3(-0.3, 0, 0.01));
       lightInform = new LightInform(
@@ -531,6 +529,7 @@ export function init(glbPath, cardText) {
       );
       fogInform = new FogInform(0x0f1b1b, -30, 150);
       first_camera_rotation = 1;
+
       cameraInform = new CameraInform(
         10,
         new THREE.Vector3(15.86, 12, 10.7),
@@ -564,7 +563,6 @@ export function init(glbPath, cardText) {
       type = "default";
   }
   camera_rotation = first_camera_rotation;
-
   // 타입에 따라 로딩 gif 설정
   let src = "";
   let p = "";
@@ -588,7 +586,6 @@ export function init(glbPath, cardText) {
   }
   document.getElementById("gif").src = src;
   document.getElementById("loading-text").textContent = p;
-
   createCamera();
   createRenderer();
   animate();
