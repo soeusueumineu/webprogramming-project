@@ -57,10 +57,9 @@ HTML, CSS, JavaScript, Three.js를 활용하여 사용자가 직접 **시각적 
 |------|------|
 | 구조 | HTML5 |
 | 스타일 | CSS3 |
-| 로직 | JavaScript (Vanilla JS) |
+| 로직 | JavaScript |
 | 3D 엔진 | Three.js + GLTFLoader |
 | 모델링 | Blender (glb 파일 사용) |
-| 사운드 | HTML5 Audio API |
 
 ---
 
