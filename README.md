@@ -69,7 +69,7 @@ HTML, CSS, JavaScript, Three.js를 활용하여 사용자가 직접 **시각적 
 
 - 반드시 **Live Server**에서 실행해주세요.  
 - 브라우저에서 직접 `index.html`을 열 경우 **3D 모델 및 음악이 로드되지 않습니다.**
-- cswep에서 접속시 index.html로 열어도 작동 가능 (https://csweb.kyonggi.ac.kr/users/202211466/project/index.html 또는 https://csweb.kyonggi.ac.kr/users/202211466/project/index.html)
+- cswep에서 접속시 index.html로 열어도 작동 가능 (https://csweb.kyonggi.ac.kr/users/202211466/project/index.html 또는 http://csweb.kyonggi.ac.kr/users/202211466/project/index.html)
 
 ---
 
